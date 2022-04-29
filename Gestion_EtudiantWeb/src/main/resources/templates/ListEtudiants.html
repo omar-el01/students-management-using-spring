@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ulyraq.net.nz/thymleaf/layout"
+      layout:decorate="template.html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body{
+            background-image: url("/bg.jpg");
+            background-repeat: none;
+            background-position:center;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content1">
+    <div class="container mt-2 pb-3" style="background-color: aqua" >
+        <div class="card-header text-center" style="background-color:aqua">Liste des Etudiants</div>
+        <div class="card-body" style="background-color: cadetblue">
+            <table class="table">
+                <tr>
+                    <th>ID</th>
+                    <th>NOM</th>
+                    <th>PRENOM</th>
+                    <th>EMAIL</th>
+                    <th>DATE</th>
+                    <th>GENRE</th>
+                    <th>ONREGLE</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="e:${listetudiant}">
+                    <td th:text="${e.getId()}"></td>
+                    <td th:text="${e.getNom()}"></td>
+                    <td th:text="${e.getPrenom()}"></td>
+                    <td th:text="${e.getEmail()}"></td>
+                    <td th:text="${e.getDateNaissance()}"></td>
+                    <td th:text="${e.getGenre()}"></td>
+                    <td th:text="${e.isOnRegle()?'Oui':'Non'}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <ul class="pagination justify-content-center flex-wrap" th:with="prev=${CurrentPage}-1">
+                <a class="btn btn-outline-success m-lg-0" th:if="${prev>=0}" th:href="@{index(page=${CurrentPage==0? 0: prev })}"> Previous </a>
+                <li th:each="page,status:${pages}">
+                    <a th:class="${page==CurrentPage?'btn btn-primary ms-2':'btn btn-outline-info ms-2'}"
+                       th:text="${page+1}"
+                       th:href="@{index(page=${page},keyword=${keyword})}"></a>
+                </li>
+                <a class="btn btn-outline-success ms-lg-2" th:if="${CurrentPage+1<nbrPages}" th:href="@{index(page=${CurrentPage+1})}"> Next</a>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
