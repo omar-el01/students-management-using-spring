@@ -54,11 +54,11 @@
                 <td th:text="${e.getDateNaissance()}"></td>
                 <td th:text="${e.getGenre()}"></td>
                 <td th:text="${e.isOnRegle()?'Oui':'Non'}"></td>
-                <td sec:authorize="hasRole('ADMIN')">
+                <td sec:authorize="hasAuthority('ADMIN')">
                     <a onclick="return confirm('Are you sure?')" class="btn btn-danger"
                        th:href=@{/admin/delete(id=${e.id},keyword=${keyword},page=${CurrentPage})}>Delete</a>
                 </td>
-                <td sec:authorize="hasRole('ADMIN')">
+                <td sec:authorize="hasAuthority('ADMIN')">
                     <a class="btn btn-success"
                        th:href=@{/admin/editEtudiant(id=${e.id},keyword=${keyword},page=${CurrentPage})}>Edit</a>
                 </td>

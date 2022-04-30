@@ -8,6 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
 
@@ -35,7 +37,7 @@ public class GestionEtudiantApplication {
         };
 
     }
-    @Bean
+   // @Bean
     CommandLineRunner saveUsers(SecurityService securityService){
         return args -> {
 securityService.saveNewUser("omar","0000","0000");
@@ -50,6 +52,10 @@ securityService.saveNewUser("omar","0000","0000");
             securityService.addRoleToUser("mohamed","USER");
             securityService.addRoleToUser("fatim","USER");
         };
+    }
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
 }

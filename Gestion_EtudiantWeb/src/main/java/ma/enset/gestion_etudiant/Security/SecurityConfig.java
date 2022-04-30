@@ -1,5 +1,6 @@
 package ma.enset.gestion_etudiant.Security;
 
+import ma.enset.gestion_etudiant.Security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,24 +21,31 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
 
 
-       PasswordEncoder passwordEncoder=passwordEncoder();
+       //inMemoryAuthentification
         /* String encodePWDuser1=passwordEncoder.encode("0000");
         String encodePWDadmin=passwordEncoder.encode("1111");
         auth.inMemoryAuthentication().withUser("user1").password(encodePWDuser1).roles("USER");
         auth.inMemoryAuthentication().withUser("admin").password(encodePWDadmin).roles("USER", "ADMIN");*/
 
+        //jdbcAuthentification
+/*auth.jdbcAuthentication()
+                .dataSource(dataSource)
+        .usersByUsernameQuery("select username as principal , password as credentials , active from users where username=?")
+        .authoritiesByUsernameQuery("select username as principal , role as role from users_roles where username=?")
+                        .rolePrefix("ROLE_")
+                                .passwordEncoder(passwordEncoder);*/
 
-        auth.userDetailsService(new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return null;
-            }
-        });
+        //userdetailservice go to userdetailserviceimpl class
+        auth.userDetailsService(userDetailsService);
     }
 
     @Override
@@ -45,13 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin();
         http.authorizeRequests().antMatchers("/").permitAll();
         http.authorizeRequests().antMatchers("/webjars/**", "/bg.jpg").permitAll();
-        http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
-        http.authorizeRequests().antMatchers("/user/**").hasRole("USER");
+        http.authorizeRequests().antMatchers("/admin/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers("/user/**").hasAuthority("USER");
         http.authorizeRequests().anyRequest().authenticated();
         http.exceptionHandling().accessDeniedPage("/403");
-    }
-    @Bean
-    PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
     }
 }
