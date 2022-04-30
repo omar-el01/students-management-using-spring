@@ -1,5 +1,6 @@
 package ma.enset.gestion_etudiant;
 
+import ma.enset.gestion_etudiant.Security.service.SecurityService;
 import ma.enset.gestion_etudiant.entities.Etudiant;
 import ma.enset.gestion_etudiant.entities.Genre;
 import ma.enset.gestion_etudiant.repositories.EtudiantRepository;
@@ -34,4 +35,21 @@ public class GestionEtudiantApplication {
         };
 
     }
+    @Bean
+    CommandLineRunner saveUsers(SecurityService securityService){
+        return args -> {
+securityService.saveNewUser("omar","0000","0000");
+            securityService.saveNewUser("mohamed","1111","1111");
+            securityService.saveNewUser("fatim","00000","00000");
+
+            securityService.saveNewRole("USER","");
+            securityService.saveNewRole("ADMIN","");
+
+            securityService.addRoleToUser("omar","USER");
+            securityService.addRoleToUser("omar","ADMIN");
+            securityService.addRoleToUser("mohamed","USER");
+            securityService.addRoleToUser("fatim","USER");
+        };
+    }
+
 }

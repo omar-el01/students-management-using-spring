@@ -5,7 +5,6 @@ import ma.enset.gestion_etudiant.entities.Etudiant;
 import ma.enset.gestion_etudiant.repositories.EtudiantRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -62,7 +60,6 @@ public class EtudiantController {
         model.addAttribute("keyword", keyword);
         return "etudiant";
     }
-
     /*@GetMapping("/list")
     public String list(Model model,
                             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -117,7 +114,7 @@ public class EtudiantController {
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "Login";
     }
 
     @GetMapping("/admin/formEtudiant")
@@ -162,6 +159,6 @@ public class EtudiantController {
             return "editEtudiant";
         }
         etudiantRepository.save(etudiant);
-        return "redirect:/admin/index?updated=true&page="+page+"&keyword="+keyword;
+        return "redirect:/user/index?updated=true&page="+page+"&keyword="+keyword;
     }
 }
